@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(MaterialApp(
+    home: RotatingComponent(),
+  ));
+}
+
 class RotatingComponent extends StatefulWidget {
   @override
   _RotatingComponentState createState() => _RotatingComponentState();
@@ -11,6 +17,18 @@ class _RotatingComponentState extends State<RotatingComponent> {
   String selectedLanguage = 'English';
   String selectedRegion = 'Upper Himachal';
 
+  void toggleLanguage() {
+    setState(() {
+      selectedLanguage = (selectedLanguage == 'English') ? 'Hindi' : 'English';
+    });
+  }
+
+  void toggleRegion(String region) {
+    setState(() {
+      selectedRegion = region;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,21 +36,17 @@ class _RotatingComponentState extends State<RotatingComponent> {
         title: Text('Himachal Pradesh - $selectedRegion'),
         actions: [
           ElevatedButton(
-            onPressed: () {
-              setState(() {
-                selectedLanguage = 'English';
-              });
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+            onPressed: toggleLanguage,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: selectedLanguage == 'English' ? Colors.indigo : Colors.grey,
+            ),
             child: Text('English'),
           ),
           ElevatedButton(
-            onPressed: () {
-              setState(() {
-                selectedLanguage = 'Hindi';
-              });
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+            onPressed: toggleLanguage,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: selectedLanguage == 'Hindi' ? Colors.indigo : Colors.grey,
+            ),
             child: Text('Hindi'),
           ),
         ],
@@ -59,12 +73,23 @@ class _RotatingComponentState extends State<RotatingComponent> {
           child: Stack(
             children: [
               Container(
-                // Use a Container to set background color
                 color: Colors.grey,
                 width: double.infinity,
                 height: double.infinity,
                 child: Image.asset(
-                  selectedLanguage=='Hindi' ? 'assets/background.png' : 'assets/pics/upper_english_bg.png',
+                      () {
+                    if (selectedLanguage == 'Hindi' && selectedRegion == 'Upper Himachal') {
+                      return 'assets/background.png';
+                    } else if (selectedLanguage == 'Hindi' && selectedRegion == 'Lower Himachal') {
+                      return 'assets/english/lower_background.png';
+                    } else if (selectedLanguage == 'English' && selectedRegion == 'Upper Himachal') {
+                      return 'assets/english/upper_eglish_BG.png';
+                    } else if (selectedLanguage == 'English' && selectedRegion == 'Lower Himachal') {
+                      return 'assets/english/lower_english_bg.png';
+                    } else {
+                      return '';
+                    }
+                  }(),
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -72,7 +97,19 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 child: Transform.rotate(
                   angle: rotation,
                   child: Image.asset(
-                    selectedLanguage=='Hindi' ? 'assets/rotating.png' : 'assets/pics/upper_english_rotate.png',
+                        () {
+                      if (selectedLanguage == 'Hindi' && selectedRegion == 'Upper Himachal') {
+                        return 'assets/rotating.png';
+                      } else if (selectedLanguage == 'Hindi' && selectedRegion == 'Lower Himachal') {
+                        return 'assets/upper_rotate.png';
+                      } else if (selectedLanguage == 'English' && selectedRegion == 'Upper Himachal') {
+                        return 'assets/pics/upper_eglish_rotate.png';
+                      } else if (selectedLanguage == 'English' && selectedRegion == 'Lower Himachal') {
+                        return 'assets/pics/lower_english_rotate.png';
+                      } else {
+                        return '';
+                      }
+                    }(),
                     width: 300,
                     height: 300,
                   ),
@@ -88,20 +125,20 @@ class _RotatingComponentState extends State<RotatingComponent> {
           children: [
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  selectedRegion = 'Upper Himachal';
-                });
+                toggleRegion('Upper Himachal');
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: selectedRegion == 'Upper Himachal' ? Colors.blue : Colors.grey,
+              ),
               child: Text('Upper Himachal'),
             ),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  selectedRegion = 'Lower Himachal';
-                });
+                toggleRegion('Lower Himachal');
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: selectedRegion == 'Lower Himachal' ? Colors.green : Colors.grey,
+              ),
               child: Text('Lower Himachal'),
             ),
           ],
@@ -110,10 +147,3 @@ class _RotatingComponentState extends State<RotatingComponent> {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    home: RotatingComponent(),
-  ));
-}
-
