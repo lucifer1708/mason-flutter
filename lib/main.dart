@@ -64,7 +64,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 width: double.infinity,
                 height: double.infinity,
                 child: Image.asset(
-                  'assets/background.png',
+                  selectedLanguage=='Hindi' ? 'assets/background.png' : '',
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -72,7 +72,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 child: Transform.rotate(
                   angle: rotation,
                   child: Image.asset(
-                    'assets/rotating.png',
+                    selectedLanguage=='Hindi' ? 'assets/rotating.png' : '',
                     width: 300,
                     height: 300,
                   ),
