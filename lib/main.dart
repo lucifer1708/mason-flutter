@@ -23,7 +23,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 selectedLanguage = 'English';
               });
             },
-            style: ElevatedButton.styleFrom(primary: Colors.blue),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             child: Text('English'),
           ),
           ElevatedButton(
@@ -32,7 +32,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 selectedLanguage = 'Hindi';
               });
             },
-            style: ElevatedButton.styleFrom(primary: Colors.green),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
             child: Text('Hindi'),
           ),
         ],
@@ -64,7 +64,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 width: double.infinity,
                 height: double.infinity,
                 child: Image.asset(
-                  'assets/background.png',
+                  selectedLanguage=='Hindi' ? 'assets/background.png' : 'assets/pics/upper_english_bg.png',
                   fit: BoxFit.fitWidth,
                 ),
               ),
@@ -72,7 +72,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 child: Transform.rotate(
                   angle: rotation,
                   child: Image.asset(
-                    'assets/rotating.png',
+                    selectedLanguage=='Hindi' ? 'assets/rotating.png' : 'assets/pics/upper_english_rotate.png',
                     width: 300,
                     height: 300,
                   ),
@@ -92,7 +92,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                   selectedRegion = 'Upper Himachal';
                 });
               },
-              style: ElevatedButton.styleFrom(primary: Colors.blue),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
               child: Text('Upper Himachal'),
             ),
             ElevatedButton(
@@ -101,7 +101,7 @@ class _RotatingComponentState extends State<RotatingComponent> {
                   selectedRegion = 'Lower Himachal';
                 });
               },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
               child: Text('Lower Himachal'),
             ),
           ],
