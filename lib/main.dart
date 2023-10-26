@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(MaterialApp(
@@ -23,9 +24,11 @@ class _RotatingComponentState extends State<RotatingComponent> {
     });
   }
 
-  void toggleRegion(String region) {
+  void toggleRegion() {
     setState(() {
-      selectedRegion = region;
+      selectedRegion = (selectedRegion == 'Upper Himachal')
+          ? 'Lower Himachal'
+          : 'Upper Himachal';
     });
   }
 
@@ -33,19 +36,21 @@ class _RotatingComponentState extends State<RotatingComponent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Himachal Pradesh - $selectedRegion'),
+        title: Text('Himachal Pradesh'),
         actions: [
           ElevatedButton(
             onPressed: toggleLanguage,
             style: ElevatedButton.styleFrom(
-              backgroundColor: selectedLanguage == 'English' ? Colors.indigo : Colors.grey,
+              backgroundColor:
+                  selectedLanguage == 'English' ? Colors.indigo : Colors.grey,
             ),
             child: Text('English'),
           ),
           ElevatedButton(
             onPressed: toggleLanguage,
             style: ElevatedButton.styleFrom(
-              backgroundColor: selectedLanguage == 'Hindi' ? Colors.indigo : Colors.grey,
+              backgroundColor:
+                  selectedLanguage == 'Hindi' ? Colors.indigo : Colors.grey,
             ),
             child: Text('Hindi'),
           ),
@@ -58,14 +63,13 @@ class _RotatingComponentState extends State<RotatingComponent> {
           final centerX = width / 2;
           final centerY = height / 2;
 
-          final dx = details.localPosition.dx;
-          final dy = details.localPosition.dy;
+          final dx = details.localPosition.dx - centerX;
+          final dy = details.localPosition.dy - centerY;
 
-          final angle = -((dy - centerY) / (dx - centerX));
-          final newRotation = angle - previousAngle;
+          final angle = atan2(dy, dx);
 
           setState(() {
-            rotation += newRotation;
+            rotation += angle - previousAngle;
             previousAngle = angle;
           });
         },
@@ -77,14 +81,18 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 width: double.infinity,
                 height: double.infinity,
                 child: Image.asset(
-                      () {
-                    if (selectedLanguage == 'Hindi' && selectedRegion == 'Upper Himachal') {
+                  () {
+                    if (selectedLanguage == 'Hindi' &&
+                        selectedRegion == 'Upper Himachal') {
                       return 'assets/background.png';
-                    } else if (selectedLanguage == 'Hindi' && selectedRegion == 'Lower Himachal') {
+                    } else if (selectedLanguage == 'Hindi' &&
+                        selectedRegion == 'Lower Himachal') {
                       return 'assets/english/lower_background.png';
-                    } else if (selectedLanguage == 'English' && selectedRegion == 'Upper Himachal') {
+                    } else if (selectedLanguage == 'English' &&
+                        selectedRegion == 'Upper Himachal') {
                       return 'assets/english/upper_eglish_BG.png';
-                    } else if (selectedLanguage == 'English' && selectedRegion == 'Lower Himachal') {
+                    } else if (selectedLanguage == 'English' &&
+                        selectedRegion == 'Lower Himachal') {
                       return 'assets/english/lower_english_bg.png';
                     } else {
                       return '';
@@ -97,21 +105,25 @@ class _RotatingComponentState extends State<RotatingComponent> {
                 child: Transform.rotate(
                   angle: rotation,
                   child: Image.asset(
-                        () {
-                      if (selectedLanguage == 'Hindi' && selectedRegion == 'Upper Himachal') {
+                    () {
+                      if (selectedLanguage == 'Hindi' &&
+                          selectedRegion == 'Upper Himachal') {
                         return 'assets/rotating.png';
-                      } else if (selectedLanguage == 'Hindi' && selectedRegion == 'Lower Himachal') {
+                      } else if (selectedLanguage == 'Hindi' &&
+                          selectedRegion == 'Lower Himachal') {
                         return 'assets/upper_rotate.png';
-                      } else if (selectedLanguage == 'English' && selectedRegion == 'Upper Himachal') {
+                      } else if (selectedLanguage == 'English' &&
+                          selectedRegion == 'Upper Himachal') {
                         return 'assets/pics/upper_eglish_rotate.png';
-                      } else if (selectedLanguage == 'English' && selectedRegion == 'Lower Himachal') {
+                      } else if (selectedLanguage == 'English' &&
+                          selectedRegion == 'Lower Himachal') {
                         return 'assets/pics/lower_english_rotate.png';
                       } else {
                         return '';
                       }
                     }(),
-                    width: 300,
-                    height: 300,
+                    width: 290,
+                    height: 290,
                   ),
                 ),
               ),
@@ -120,28 +132,21 @@ class _RotatingComponentState extends State<RotatingComponent> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                toggleRegion('Upper Himachal');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: selectedRegion == 'Upper Himachal' ? Colors.blue : Colors.grey,
-              ),
-              child: Text('Upper Himachal'),
+        child: Container(
+          width: double.infinity, // Set the width to full screen
+          height: 60,
+          child: ElevatedButton(
+            onPressed: toggleRegion,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue,
             ),
-            ElevatedButton(
-              onPressed: () {
-                toggleRegion('Lower Himachal');
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: selectedRegion == 'Lower Himachal' ? Colors.green : Colors.grey,
+            child: Text(
+              'Flip',
+              style: TextStyle(
+                fontSize: 24, // Set the text size here
               ),
-              child: Text('Lower Himachal'),
             ),
-          ],
+          ),
         ),
       ),
     );
